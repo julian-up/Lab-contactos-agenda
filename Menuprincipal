@@ -1,0 +1,155 @@
+import java.util.Scanner;
+
+/**
+ * Menú interactivo de la Agenda de Contactos.
+ *
+ * Requisitos cumplidos:
+ * - Bucle while para mantener el menú activo hasta elegir "Salir".
+ * - switch para procesar las opciones.
+ * - Scanner para leer la entrada del usuario.
+ * - Manejo de opciones inválidas (letras, números fuera de rango, etc.).
+ */
+public class MenuPrincipal {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Agenda agenda = new Agenda();
+        boolean salir = false;
+
+        // El menú se repite hasta que el usuario elija la opción 9 (Salir)
+        while (!salir) {
+            mostrarMenu();
+            // Se lee como texto con nextLine() para evitar problemas de buffer
+            // del Scanner y poder manejar entradas inválidas sin excepciones.
+            String opcion = scanner.nextLine().trim();
+
+            switch (opcion) {
+                case "1":
+                    opcionAgregarContacto(scanner, agenda);
+                    break;
+                case "2":
+                    opcionBuscarContacto(scanner, agenda);
+                    break;
+                case "3":
+                    opcionEliminarContacto(scanner, agenda);
+                    break;
+                case "4":
+                    System.out.println("\n--- LISTA DE CONTACTOS ---");
+                    agenda.listarContactos();
+                    break;
+                case "5":
+                    opcionAgregarGrupo(scanner, agenda);
+                    break;
+                case "6":
+                    opcionAgregarContactoAGrupo(scanner, agenda);
+                    break;
+                case "7":
+                    System.out.println("\n--- LISTA DE GRUPOS ---");
+                    agenda.listarGrupos();
+                    break;
+                case "8":
+                    opcionMostrarContactosPorGrupo(scanner, agenda);
+                    break;
+                case "9":
+                    salir = true;
+                    System.out.println("¡Hasta pronto!");
+                    break;
+                default:
+                    System.out.println("Opción inválida. Por favor elige un número del 1 al 9.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    /**
+     * Imprime el menú principal en pantalla.
+     */
+    private static void mostrarMenu() {
+        System.out.println();
+        System.out.println("=== AGENDA DE CONTACTOS ===");
+        System.out.println("1. Agregar contacto");
+        System.out.println("2. Buscar contacto");
+        System.out.println("3. Eliminar contacto");
+        System.out.println("4. Listar todos los contactos");
+        System.out.println("5. Agregar grupo");
+        System.out.println("6. Agregar contacto a grupo");
+        System.out.println("7. Listar grupos");
+        System.out.println("8. Mostrar contactos por grupo");
+        System.out.println("9. Salir");
+        System.out.println("==========================");
+        System.out.print("Elige una opción: ");
+    }
+
+    // ===== Métodos auxiliares para cada opción del menú =====
+
+    private static void opcionAgregarContacto(Scanner scanner, Agenda agenda) {
+        System.out.println("\n--- AGREGAR CONTACTO ---");
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine().trim();
+        if (nombre.isEmpty()) {
+            System.out.println("Error: El nombre no puede estar vacío.");
+            return;
+        }
+        System.out.print("Teléfono: ");
+        String telefono = scanner.nextLine().trim();
+        System.out.print("Email: ");
+        String email = scanner.nextLine().trim();
+
+        agenda.agregarContacto(new Contacto(nombre, telefono, email));
+    }
+
+    private static void opcionBuscarContacto(Scanner scanner, Agenda agenda) {
+        System.out.println("\n--- BUSCAR CONTACTO ---");
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine().trim();
+
+        Contacto encontrado = agenda.buscarContacto(nombre);
+        if (encontrado != null) {
+            System.out.println("Contacto encontrado: " + encontrado);
+        } else {
+            System.out.println("No se encontró ningún contacto con el nombre '" + nombre + "'");
+        }
+    }
+
+    private static void opcionEliminarContacto(Scanner scanner, Agenda agenda) {
+        System.out.println("\n--- ELIMINAR CONTACTO ---");
+        System.out.print("Nombre: ");
+        String nombre = scanner.nextLine().trim();
+
+        if (agenda.eliminarContacto(nombre)) {
+            System.out.println("Contacto '" + nombre + "' eliminado");
+        } else {
+            System.out.println("Error: No existe un contacto con el nombre '" + nombre + "'");
+        }
+    }
+
+    private static void opcionAgregarGrupo(Scanner scanner, Agenda agenda) {
+        System.out.println("\n--- AGREGAR GRUPO ---");
+        System.out.print("Nombre del grupo: ");
+        String nombreGrupo = scanner.nextLine().trim();
+        if (nombreGrupo.isEmpty()) {
+            System.out.println("Error: El nombre del grupo no puede estar vacío.");
+            return;
+        }
+        agenda.agregarGrupo(nombreGrupo);
+    }
+
+    private static void opcionAgregarContactoAGrupo(Scanner scanner, Agenda agenda) {
+        System.out.println("\n--- AGREGAR CONTACTO A GRUPO ---");
+        System.out.print("Nombre del contacto: ");
+        String nombreContacto = scanner.nextLine().trim();
+        System.out.print("Nombre del grupo: ");
+        String nombreGrupo = scanner.nextLine().trim();
+
+        agenda.agregarContactoAGrupo(nombreContacto, nombreGrupo);
+    }
+
+    private static void opcionMostrarContactosPorGrupo(Scanner scanner, Agenda agenda) {
+        System.out.println("\n--- CONTACTOS POR GRUPO ---");
+        System.out.print("Nombre del grupo: ");
+        String nombreGrupo = scanner.nextLine().trim();
+
+        agenda.mostrarContactosPorGrupo(nombreGrupo);
+    }
+}
