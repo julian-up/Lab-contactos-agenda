@@ -1,0 +1,62 @@
+/**
+ * Representa un contacto de la agenda con su información básica.
+ *
+ * Lab TIFC2DEV-JAVA-MJ10 – Address-Book (Collections)
+ */
+public class Contacto {
+
+    // Atributos privados (encapsulamiento)
+    private String nombre;
+    private String telefono;
+    private String email;
+
+    /**
+     * Constructor que recibe todos los atributos.
+     *
+     * @param nombre   nombre completo del contacto
+     * @param telefono número de teléfono
+     * @param email    correo electrónico
+     */
+    public Contacto(String nombre, String telefono, String email) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.email = email;
+    }
+
+    // ===== Getters =====
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    // ===== Setters =====
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Devuelve una representación legible del contacto.
+     * Ejemplo: Ana Pérez | Teléfono: 555-1234 | Email: ana@email.com
+     */
+    @Override
+    public String toString() {
+        return nombre + " | Teléfono: " + telefono + " | Email: " + email;
+    }
+}
